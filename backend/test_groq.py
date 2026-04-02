@@ -32,7 +32,7 @@ def test_entity_extraction():
                 {"role": "system", "content": "You are an intelligence data extractor. Output only raw JSON."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama3-8b-8192", 
+            model="llama-3.1-8b-instant", 
             response_format={"type": "json_object"}, # This forces it to never return conversational text
         )
         

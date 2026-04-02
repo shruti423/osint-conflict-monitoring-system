@@ -36,35 +36,48 @@ def fetch_reliefweb():
         print(f"Failed to fetch ReliefWeb. Status Code: {response.status_code}")
 
 def fetch_rss_feed():
-    """Fetches news from a targeted RSS feed (Al Jazeera)."""
-    print("Fetching RSS feed...")
-    rss_url = "https://www.aljazeera.com/xml/rss/all.xml"
-    feed = feedparser.parse(rss_url)
+    """Fetches news from a massive list of targeted RSS feeds."""
+    print("Fetching expanded RSS feeds...")
     
-    # Extract just the articles we care about
+    # We expand from 1 source to an entire array of global sources
+    rss_urls = [
+        "https://www.aljazeera.com/xml/rss/all.xml",
+        "http://feeds.bbci.co.uk/news/world/middle_east/rss.xml", # BBC Middle East
+        "https://www.jpost.com/rss/rssfeedsfrontpage", # Jerusalem Post
+        "https://www.tehrantimes.com/rss", # Tehran Times (Local perspective)
+        "https://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml" # NYT
+    ]
+    
     articles = []
-    for entry in feed.entries:
-        if 'iran' in entry.title.lower() or 'israel' in entry.title.lower():
-            articles.append({"title": entry.title, "link": entry.link, "summary": entry.summary})
+    for url in rss_urls:
+        try:
+            feed = feedparser.parse(url)
+            for entry in feed.entries:
+                # Broadened the search terms slightly to catch more regional data
+                title_lower = entry.title.lower()
+                if any(keyword in title_lower for keyword in ['iran', 'israel', 'strike', 'idf', 'tehran', 'gaza']):
+                    articles.append({"title": entry.title, "link": entry.link, "summary": getattr(entry, 'summary', '')})
+        except Exception as e:
+            print(f"Failed to fetch {url}: {e}")
             
     filepath = os.path.join(RAW_DATA_DIR, "rss_raw.json")
     with open(filepath, "w") as f:
         json.dump(articles, f)
-    print("RSS feed data saved!")
+    print(f"Expanded RSS feed data saved! Total articles: {len(articles)}")
 
 def fetch_newsapi():
-    """Fetches global news articles using your secure API key."""
-    print("Fetching NewsAPI data...")
+    """Fetches a high volume of global news articles."""
+    print("Fetching high-volume NewsAPI data...")
     if not NEWSAPI_KEY:
         print("Skipping NewsAPI: No API key found in .env file.")
         return
         
     url = "https://newsapi.org/v2/everything"
     params = {
-        "q": "Iran OR Israel OR strike",
+        "q": "Iran OR Israel OR IDF OR Hezbollah", # Broadened query
         "language": "en",
         "sortBy": "publishedAt",
-        "pageSize": 10,
+        "pageSize": 100, # CRANKED FROM 10 TO 100
         "apiKey": NEWSAPI_KEY
     }
     response = requests.get(url, params=params)
@@ -73,7 +86,7 @@ def fetch_newsapi():
         filepath = os.path.join(RAW_DATA_DIR, "newsapi_raw.json")
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(response.json(), f)
-        print("NewsAPI data saved!")
+        print(f"NewsAPI data saved! Total articles: {len(response.json().get('articles', []))}")
     else:
         print(f"Failed to fetch NewsAPI. Status Code: {response.status_code}")
 
