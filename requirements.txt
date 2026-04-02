@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+requests
+feedparser
+groq
+scikit-learn
+sentence-transformers
+python-dotenv
