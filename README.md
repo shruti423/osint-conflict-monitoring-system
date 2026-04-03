@@ -18,11 +18,11 @@ Rather than a standard CRUD application, this system is engineered with a heavy 
 
 ## Mandatory Documentation
 All mandatory documentation requested by the SAIG Hiring Team can be found in the `docs/` folder:
-1. `Planning_Note.pdf` 
-2. `Architecture_Note.pdf` *(Pending Phase 4)*
-3. `Decision_Log.pdf` *(Pending Phase 4)*
-4. `Final_Retrospective.pdf` *(Pending Phase 5)*
-5. `AI_Usage_Declaration.pdf` *(Pending Phase 5)*
+1. `Planning_Note.docx` 
+2. `Architecture_Note.docx` *(Pending Phase 4)*
+3. `Decision_Log.docx` *(Pending Phase 4)*
+4. `Final_Retrospective.docx` *(Pending Phase 5)*
+5. `AI_Usage_Declaration.docx` *(Pending Phase 5)*
 
 ## Local Setup & Reproduction
 *(Instructions for running this pipeline locally will be added upon final system compilation).*
