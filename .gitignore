@@ -1,2 +1,45 @@
+# --- Security & Credentials ---
 .env
+osint_session.session
+*.pem
+*.key
+
+# --- Python Backend ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Frontend (Node/React) ---
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+.eslintcache
+.stylelintcache
+
+# --- OSINT Data & Logs ---
 data/
+*.log
+*.sqlite
+
+# --- System & IDE ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
