@@ -147,7 +147,7 @@ npm install
 npm run dev
 ```
 
-👉 Frontend runs on: **[http://localhost:5173](http://localhost:5173)**
+👉 Frontend runs on: **[http://localhost:5173](http://localhost:8080)**
 
 ---
 
