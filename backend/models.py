@@ -24,6 +24,7 @@ class KPISummary(BaseModel):
     active_actors: int
     alert_level: str
     avg_severity: float
+    raw_count: int
 
 # 4. The final payload sent to the React UI
 class DashboardResponseModel(BaseModel):

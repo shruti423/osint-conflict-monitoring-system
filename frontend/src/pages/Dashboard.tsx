@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TypewriterText from "@/components/TypewriterText";
 import TacticalMap from "@/components/TacticalMap";
+import DetailModal from "@/components/DetailModal";
 
 // Define TypeScript interfaces matching our FastAPI backend Pydantic models
 interface IntelligenceAlert {
@@ -22,6 +23,7 @@ interface KPISummary {
   active_actors: number;
   alert_level: string;
   avg_severity: number;
+  raw_count: number;
 }
 
 interface DashboardData {
@@ -40,6 +42,8 @@ const Dashboard = () => {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [selectedAlert, setSelectedAlert] = useState<IntelligenceAlert | null>(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -93,6 +97,7 @@ const Dashboard = () => {
 
   // Prepare KPIs for dynamic rendering
   const kpiDisplay = [
+    { label: "RAW SIGNALS", value: data.kpis.raw_count },
     { label: "TOTAL EVENTS", value: data.kpis.total_events },
     { label: "UNIQUE ACTORS", value: data.kpis.active_actors },
     { label: "GLOBAL SEVERITY", value: `${data.kpis.avg_severity.toFixed(2)} / 1.0` },
@@ -201,7 +206,7 @@ const Dashboard = () => {
             </thead>
             <tbody>
               {data.flash_alerts.map((row, i) => (
-                <tr key={i} className="border-b border-muted/30 hover:bg-muted/20 transition-colors">
+                <tr key={i} onClick={() => setSelectedAlert(row)} className="border-b border-muted/30 hover:bg-muted/20 transition-colors">
                   <td className="p-2 whitespace-nowrap text-muted-foreground">
                     {new Date(row.published_at).toISOString().split('T')[1].slice(0,8)} Z
                   </td>
